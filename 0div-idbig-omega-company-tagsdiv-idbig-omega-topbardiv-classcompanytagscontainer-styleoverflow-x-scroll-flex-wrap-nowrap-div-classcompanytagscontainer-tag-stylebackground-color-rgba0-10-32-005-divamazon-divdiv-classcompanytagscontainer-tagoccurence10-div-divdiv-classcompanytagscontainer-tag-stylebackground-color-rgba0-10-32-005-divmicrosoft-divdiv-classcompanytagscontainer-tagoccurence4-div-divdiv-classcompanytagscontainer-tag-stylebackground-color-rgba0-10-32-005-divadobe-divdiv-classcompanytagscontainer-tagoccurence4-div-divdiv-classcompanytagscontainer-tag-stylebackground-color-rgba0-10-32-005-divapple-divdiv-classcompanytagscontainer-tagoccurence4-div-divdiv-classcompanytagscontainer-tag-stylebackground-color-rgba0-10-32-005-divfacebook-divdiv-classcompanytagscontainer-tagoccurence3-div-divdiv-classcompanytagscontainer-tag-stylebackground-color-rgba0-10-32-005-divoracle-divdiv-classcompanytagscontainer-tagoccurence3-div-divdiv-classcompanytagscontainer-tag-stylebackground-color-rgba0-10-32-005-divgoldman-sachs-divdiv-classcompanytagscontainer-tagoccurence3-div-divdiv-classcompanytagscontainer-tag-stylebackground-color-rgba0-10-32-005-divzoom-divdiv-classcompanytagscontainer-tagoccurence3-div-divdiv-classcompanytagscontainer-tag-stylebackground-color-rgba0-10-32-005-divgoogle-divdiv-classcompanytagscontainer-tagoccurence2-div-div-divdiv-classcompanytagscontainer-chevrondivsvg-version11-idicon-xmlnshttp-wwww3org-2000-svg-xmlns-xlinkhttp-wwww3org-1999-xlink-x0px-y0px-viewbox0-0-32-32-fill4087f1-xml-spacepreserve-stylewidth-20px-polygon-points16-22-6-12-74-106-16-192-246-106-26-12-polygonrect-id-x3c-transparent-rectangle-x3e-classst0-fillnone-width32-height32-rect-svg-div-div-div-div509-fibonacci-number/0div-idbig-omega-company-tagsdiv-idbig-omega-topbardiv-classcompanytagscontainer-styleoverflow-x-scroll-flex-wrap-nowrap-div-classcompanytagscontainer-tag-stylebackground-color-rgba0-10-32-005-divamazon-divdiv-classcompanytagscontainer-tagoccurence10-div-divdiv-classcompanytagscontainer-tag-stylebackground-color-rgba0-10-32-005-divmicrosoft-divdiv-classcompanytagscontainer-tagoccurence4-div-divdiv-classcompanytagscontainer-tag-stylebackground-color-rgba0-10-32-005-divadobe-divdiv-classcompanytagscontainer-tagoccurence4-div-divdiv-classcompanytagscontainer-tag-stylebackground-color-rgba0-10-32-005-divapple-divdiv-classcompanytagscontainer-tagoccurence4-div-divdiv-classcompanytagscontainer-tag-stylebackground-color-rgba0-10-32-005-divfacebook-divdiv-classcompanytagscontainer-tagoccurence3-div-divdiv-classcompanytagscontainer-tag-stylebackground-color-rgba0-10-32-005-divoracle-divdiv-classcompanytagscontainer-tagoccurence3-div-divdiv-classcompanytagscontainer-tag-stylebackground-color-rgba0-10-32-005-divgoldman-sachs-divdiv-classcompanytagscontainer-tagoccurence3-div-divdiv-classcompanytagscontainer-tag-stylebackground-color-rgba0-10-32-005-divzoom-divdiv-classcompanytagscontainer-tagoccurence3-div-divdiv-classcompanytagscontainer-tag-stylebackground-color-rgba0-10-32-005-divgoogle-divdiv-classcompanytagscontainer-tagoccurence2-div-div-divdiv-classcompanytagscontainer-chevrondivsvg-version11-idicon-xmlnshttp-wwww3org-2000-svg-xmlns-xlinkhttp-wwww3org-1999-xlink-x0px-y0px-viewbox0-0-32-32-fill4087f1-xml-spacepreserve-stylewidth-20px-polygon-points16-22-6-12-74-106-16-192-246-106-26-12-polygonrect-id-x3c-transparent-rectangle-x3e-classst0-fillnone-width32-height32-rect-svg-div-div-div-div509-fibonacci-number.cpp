@@ -5,8 +5,7 @@ int dpsolve(int n,vector<int>&dp)
     //basecase
     if(n==0 || n==1) return n;
     if(dp[n]!=-1) return dp[n];
-    dp[n]=dpsolve(n-1,dp)+dpsolve(n-2,dp);
-    return dp[n];
+    return dpsolve(n-1,dp)+dpsolve(n-2,dp);
 }
     int fib(int n) 
     {
