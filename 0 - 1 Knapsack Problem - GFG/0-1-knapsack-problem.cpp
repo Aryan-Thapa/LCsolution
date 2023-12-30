@@ -45,12 +45,37 @@ class Solution
         return dp[index][capacity];
     }
     
+    int tabulation(int capacity,int weight[],int value[],int index)
+    {
+        vector<vector<int>>dp(index,vector<int>(capacity+1,0));
+        for(int w=weight[0];w<=capacity;w++)
+        {
+            if(weight[0]<=capacity)dp[0][w]=value[0];
+            else dp[0][w]=0;
+        }
+        for(int i=1;i<index;i++)
+        {
+            for(int j=0;j<=capacity;j++)
+            {
+                int include=0;
+                if(weight[i]<=j)
+                {
+                    include=value[i] + dp[i-1][j-weight[i]];
+                }
+                int exclude=dp[i-1][j];
+                dp[i][j]=max(include,exclude);
+            }
+        }
+        return dp[index-1][capacity];
+    }
+    
     int knapSack(int W, int wt[], int val[], int n) 
     { 
        // Your code here
-       vector<vector<int>>dp(n+1,vector<int>(W+1,-1));
-       return solveusingmem(W,wt,val,n-1,dp);
+    //   vector<vector<int>>dp(n+1,vector<int>(W+1,-1));
+    //   return solveusingmem(W,wt,val,n-1,dp);
     //   return solve(W,wt,val,n-1);
+    return tabulation(W,wt,val,n);
     }
 };
 
