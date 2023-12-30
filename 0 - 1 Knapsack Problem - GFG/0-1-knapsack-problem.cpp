@@ -68,6 +68,57 @@ class Solution
         }
         return dp[index-1][capacity];
     }
+    int SO(int capacity,int weight[],int value[],int index)
+    {
+        vector<int>prev(capacity+1,0);
+        vector<int>curr(capacity+1,0);
+        for(int w=weight[0];w<=capacity;w++)
+        {
+            if(weight[0]<=capacity) prev[w]=value[0];
+            else prev[w]=0;
+        }
+        for(int i=1;i<index;i++)
+        {
+            for(int j=0;j<=capacity;j++)
+            {
+                int include=0;
+                if(weight[i]<=j)
+                {
+                    include=value[i] + prev[j-weight[i]];
+                }
+                int exclude=prev[j];
+                curr[j]=max(include,exclude);
+            }
+            prev=curr;
+        }
+        return curr[capacity];
+    }
+    
+    int SO2(int capacity,int weight[],int value[],int index)
+    {
+        vector<int>curr(capacity+1,0);
+        for(int w=weight[0];w<=capacity;w++)
+        {
+            if(weight[0]<=capacity) curr[w]=value[0];
+            else curr[w]=0;
+        }
+        for(int i=1;i<index;i++)
+        {
+            for(int j=capacity;j>=0;j--)
+            {
+                int include=0;
+                if(weight[i]<=j)
+                {
+                    include=value[i] + curr[j-weight[i]];
+                }
+                int exclude=curr[j];
+                curr[j]=max(include,exclude);
+            }
+        }
+        return curr[capacity];
+    }
+    
+    
     
     int knapSack(int W, int wt[], int val[], int n) 
     { 
@@ -75,7 +126,7 @@ class Solution
     //   vector<vector<int>>dp(n+1,vector<int>(W+1,-1));
     //   return solveusingmem(W,wt,val,n-1,dp);
     //   return solve(W,wt,val,n-1);
-    return tabulation(W,wt,val,n);
+    return SO2(W,wt,val,n);
     }
 };
 
